@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<h1>Test</h1>
+{# creation de variables #}
+{% set name = "Michel" %}
+<h2>Hello {{ name }} !</h2>
+{# creation de tableau #}
+{% set colours = ["red","orange", "yellow","lightgreen","lightblue","violet","pink"] %}
+{% for colour in colours %}
+    {% if loop.first %}
+        <p>première couleur</p>
+    {% elseif loop.last %}
+        <p>dernière couleur</p>
+    {% endif %}
+    <div style="background-color: {{ colour }}">{{ colour }}</div>
+    <div> index élément (part de 1): {{ loop.index }}</div>
+    <div> index élément à partir de 0: {{ loop.index0 }}</div>
+    {#        <p style="background-color: {{ colour }}">{{ colour }}</p> #}
+
+{% endfor %}
+
+{# utilisation d'objet #}
+{% set user ={name:"michel", age:98} %}
+<p>nom: {{ user.name }}</p>
+<p>age: {{ user.age }}</p>
+<h2>quelques filtres</h2>
+<div>{{ name|upper }}, taille du nom: {{ name|length }}</div>
+<div>Taille du tableau: {{ colours| length }}</div>
+<div>Date du jour: {{ "now" | date}}</div>
+{#sans formattage#}
+<div>Date du jour: {{ "now" | date('d/M/Y') }}</div>
+{#'M' montre le nom du mois#}
+<div>Date du jour: {{ "now" | date('d/m/Y') }}</div>
+{#'m' montre le nom du mois#}
+</body>
+</html>
