@@ -23,13 +23,29 @@
 {% set user ={name:"michel", age:98} %}
 <p>nom: {{ user.name }}</p>
 <p>age: {{ user.age }}</p>
+
 <h2>quelques filtres</h2>
 <div>{{ name|upper }}, taille du nom: {{ name|length }}</div>
 <div>Taille du tableau: {{ colours| length }}</div>
+
 <div>Date du jour: {{ "now" | date}}</div>
 {#sans formattage#}
-<div>Date du jour: {{ "now" | date('d/M/Y') }}</div>
+<div>Date du jour: {{ "now" | date('d/M/Y H:i:s') }}</div>
 {#'M' montre le nom du mois#}
-<div>Date du jour: {{ "now" | date('d/m/Y') }}</div>
+<div>Date du jour: {{ "now" | date('d/m/Y H:i:s') }}</div>
 {#'m' montre le nom du mois#}
+<h3>Série 1</h3>
+<div>{{ mySerie.name }}</div>
+<div>{{ mySerie.author }}</div>
+<div>{{ mySerie.nbEpisodes }}</div>
+
+    <h3>attaque xss</h3>
+{#    protection automatique des injection xss à l'affichage#}
+<div>{{ username }}</div>
+{#    permet d'interpréter du code html#}
+<div>{{ username |raw }}</div>
+
+{#    enlève les balises#}
+    <div>{{ username |striptags }}</div>
+
 {% endblock %}
