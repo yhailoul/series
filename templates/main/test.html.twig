@@ -1,19 +1,11 @@
-<!doctype html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
+{% extends 'base.html.twig' %}
+{% block body %}
 <h1>Test</h1>
 {# creation de variables #}
 {% set name = "Michel" %}
 <h2>Hello {{ name }} !</h2>
 {# creation de tableau #}
-{% set colours = ["red","orange", "yellow","lightgreen","lightblue","violet","pink"] %}
+{% set colours = ["red","orange", "yellow","lightgreen","cornflowerblue","violet","pink"] %}
 {% for colour in colours %}
     {% if loop.first %}
         <p>première couleur</p>
@@ -40,5 +32,4 @@
 {#'M' montre le nom du mois#}
 <div>Date du jour: {{ "now" | date('d/m/Y') }}</div>
 {#'m' montre le nom du mois#}
-</body>
-</html>
+{% endblock %}
