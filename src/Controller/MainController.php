@@ -19,8 +19,10 @@ final class MainController extends AbstractController
     #[Route('/test', name: 'main_test')]
     public function test(): Response
     {
+        $serie=['name'=>'Dragon Ball Z', "author"=>'Toriyama','nbEpisodes'=>291];
+        $username ='<h1>attaque XSS</h1>';
         return $this->render('main/test.html.twig', [
-            'controller_name' => 'MainController',
+            'mySerie' => $serie, 'username' => $username
         ]);
 
     }
