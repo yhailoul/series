@@ -2,6 +2,14 @@
 
 {% block body %}
     <h2>List of series </h2>
+    <div>
+        {% if currentPage>1 %}
+        <a href="{{ path('series_list',{'page':currentPage-1}) }}">Previous Page</a>
+        {% endif %}
+        {% if currentPage < maxPage %}
+        <a href="{{ path('series_list',{'page':currentPage+1})}}">Next Page</a>
+        {% endif %}
+    </div>
     <section class="series-list">
     {% for serie in series %}
         <article>
