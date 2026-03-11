@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}SERIES{% endblock %}</title>
@@ -11,6 +11,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
     </head>
     <body>
     <div class="container">
@@ -23,6 +24,6 @@
     </main>
     <footer> {% include "views/nav/file.html.twig" %}</footer>
     </div>
-
+    {% block extrastyles %} {% endblock %}
     </body>
 </html>

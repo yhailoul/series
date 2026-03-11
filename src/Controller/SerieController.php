@@ -3,29 +3,33 @@
 namespace App\Controller;
 
 use App\Entity\Serie;
+use App\Repository\SerieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/series', name: 'series_')]
 final class SerieController extends AbstractController
 {
-    #[Route('/series', name: 'series_')]
-    public function list(): Response
+    #[Route('', name: 'list')]
+    public function list( SerieRepository $serieRepository): Response
+    {
+        $series = $serieRepository -> findAll();
+        return $this->render('series/list.html.twig',['series'=>$series]);
+    }
+    #[Route('/{id}', name: 'show', requirements: ['id' => '\d+'])]
+    public function show(int $id,SerieRepository $serieRepository): Response
     {
 
-        //TODO renvoyer la liste
-        return $this->render('series/list.html.twig');
-    }
-    #[Route('/series/{id}', name: 'series_show', requirements: ['id' => '\d+'])]
-    public function show(int $id): Response
-    {
-        dump($id);
-        //TODO renvoyer le détail d'une liste
-        return $this->render('series/show.html.twig');
+        $serie = $serieRepository->find($id);
+        if(!$serie){
+            throw $this->createNotFoundException('Oooops! The show '.$id.' not found');
+        }
+        return $this->render('series/show.html.twig', ['serie'=>$serie]);
 
     }
-    #[Route('series/create', name: 'series_create', methods: ['POST','GET'])]
+    #[Route('/create', name: 'create', methods: ['POST','GET'])]
     public function create(EntityManagerInterface $entityManager): Response
     {
         $serie= new Serie();
