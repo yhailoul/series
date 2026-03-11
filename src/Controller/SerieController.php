@@ -16,13 +16,17 @@ final class SerieController extends AbstractController
     public function list( SerieRepository $serieRepository): Response
     {
         $series = $serieRepository -> findAll();
+        //$series= $serieRepository->findBy([],['popularity' => 'DESC'],25, 25);
+        //$series=$serieRepository->findOneBy([],['popularity' => 'DESC']);
+        //$series=$serieRepository->findBestSeries();
         return $this->render('series/list.html.twig',['series'=>$series]);
     }
     #[Route('/{id}', name: 'show', requirements: ['id' => '\d+'])]
     public function show(int $id,SerieRepository $serieRepository): Response
     {
 
-        $serie = $serieRepository->find($id);
+       $serie = $serieRepository->find($id);
+
         if(!$serie){
             throw $this->createNotFoundException('Oooops! The show '.$id.' not found');
         }
