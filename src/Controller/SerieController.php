@@ -12,16 +12,25 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/series', name: 'series_')]
 final class SerieController extends AbstractController
 {
-    #[Route('', name: 'list')]
-    public function list( SerieRepository $serieRepository): Response
+    #[Route('/{page}', name: 'list', requirements: ['page'=>'\d+'])]
+    public function list( SerieRepository $serieRepository, int $page=1): Response
     {
-        $series = $serieRepository -> findAll();
+        //$series = $serieRepository -> findAll();
         //$series= $serieRepository->findBy([],['popularity' => 'DESC'],25, 25);
         //$series=$serieRepository->findOneBy([],['popularity' => 'DESC']);
-        //$series=$serieRepository->findBestSeries();
-        return $this->render('series/list.html.twig',['series'=>$series]);
+        $nbseries= $serieRepository->count();
+        $maxPage = ceil($nbseries/50);
+        if($page < 1) {
+            return $this->redirectToRoute('series_list', ['page' => 1]);
+        }
+        if($page>$maxPage){
+            throw $this->createNotFoundException("you've gone too far, there are no pages left");
+        }
+
+        $series=$serieRepository->findBestSeries($page);
+        return $this->render('series/list.html.twig',['series'=>$series,'currentPage'=>$page,'maxPage'=>$maxPage]);
     }
-    #[Route('/{id}', name: 'show', requirements: ['id' => '\d+'])]
+    #[Route('/detail/{id}', name: 'show', requirements: ['id' => '\d+'])]
     public function show(int $id,SerieRepository $serieRepository): Response
     {
 
