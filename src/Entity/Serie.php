@@ -5,7 +5,9 @@ namespace App\Entity;
 use App\Repository\SerieRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
+#[ORM\HasLifecycleCallbacks()]
 #[ORM\Entity(repositoryClass: SerieRepository::class)]
 class Serie
 {
@@ -14,16 +16,21 @@ class Serie
     #[ORM\Column]
     private ?int $id = null;
 
+
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "please enter a tv-show name")]
+    #[Assert\Length(min: 1, max: 255, maxMessage: "max : {{ limit }} characters allowed")]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $overview = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\Choice(choices: ['ended','returning','cancelled'], message: "Please select a series overview")]
     private ?string $status = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 3, scale: 1)]
+    #[Assert\Range(notInRangeMessage: "vote must be between {{ min }} and {{ max }}", min:0, max:10)]
     private ?string $vote = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 6, scale: 2)]
@@ -33,9 +40,11 @@ class Serie
     private ?string $genres = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\LessThan(propertyPath: "lastAirDate")]
     private ?\DateTime $firstAirDate = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\GreaterThan(propertyPath: "firstAirDate")]
     private ?\DateTime $lastAirDate = null;
 
     #[ORM\Column(length: 255)]
@@ -212,5 +221,14 @@ class Serie
         $this->dateModified = $dateModified;
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setDateCreatedNow(){
+        $this->setDateCreated(new \DateTime);
+    }
+    #[ORM\PreUpdate]
+    public function setDateModifiedNow(){
+        $this->setDateModified(new \DateTime);
     }
 }
