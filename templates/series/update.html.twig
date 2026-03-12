@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>update a TV show</h2>
+    {{ form_start(serieForm) }}
+    {{ form_widget(serieForm) }}
+    <br>
+    <button>update a show</button>
+    {{ form_end(serieForm) }}
+{% endblock %}
