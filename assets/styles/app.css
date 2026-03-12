@@ -70,3 +70,6 @@ label{
 .flash-success {
     background-color: lawngreen
 }
+.form-error{
+    color: red;
+}

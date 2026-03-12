@@ -1,0 +1,8 @@
+{%form_theme serieForm 'views/form/form-themes.html.twig' %}
+<h2>{% block formTitle %}{% endblock %}</h2>
+
+    {{ form_start(serieForm) }}
+    {{ form_widget(serieForm) }}
+    <br>
+    <button>{%block buttonLabel %}{%endblock %}</button>
+    {{ form_end(serieForm) }}

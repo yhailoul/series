@@ -7,6 +7,7 @@ use App\Form\SerieType;
 use App\Repository\SerieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -53,6 +54,16 @@ final class SerieController extends AbstractController
         //extraction des données de la requête pour injection dans l'instance de l'entité ou classe modèle associée
         $serieForm->handleRequest($request);
         if($serieForm->isSubmitted() && $serieForm->isValid()){
+
+            //annotation pour faire comprendre à l'IDE de comprendre quel type de fichier j'utilise.
+            /**
+             * @var UploadedFile $file
+             */
+            //récupère une information qui n'est pas directement mappée avec l'entité
+            $file= $serieForm->get('backdrop')->getData();
+            $newFileName =$serie->getName().'-'.uniqid().'.'.$file->guessExtension();
+            $file->move('images/backdrops', $newFileName);
+            $serie->setBackdrop($newFileName);
 
             //traitement des données
             //$serie->setDateCreated(new \DateTime()); géré dans l'entité avec appel automatique juste avant l'enregistrement
