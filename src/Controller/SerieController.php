@@ -93,6 +93,18 @@ final class SerieController extends AbstractController
 
         return $this->render('series/update.html.twig',['serieForm'=>$serieForm]);
     }
+    #[Route('/delete/{id}', name: 'delete', methods: ['POST','GET'])]
+    public function delete(int $id, SerieRepository $repository, EntityManagerInterface$entityManager, Request $request): Response
+    {
+        $serie = $repository->find($id);
+        if(!$serie){
+            throw $this->createNotFoundException('Oooops! The delete '.$id.' not found');
+        }
+        $entityManager->remove($serie);
+        $entityManager->flush();
+        $this->addFlash('success','Serie'.$serie->getName(). 'has been deleted');
+        return $this->redirectToRoute('series_list');
+    }
 
 }
 

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Serie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -28,15 +29,21 @@ public function findBestSeries( int $page=1){
 
         //query builder
     $qb=$this->createQueryBuilder("s");
-    $qb
-//        ->andWhere('s.vote<10')
-//    ->andWhere('s.popularity>1000')
-    ->addOrderBy('s.popularity','DESC');
+
+//  $qb ->andWhere('s.vote<10')
+//  $qb->andWhere('s.popularity>1000')
+    $qb->leftJoin('s.seasons', 'seasons');
+    $qb->addSelect('seasons');
+    $qb->addOrderBy('s.popularity','DESC');
+
 
     $query=$qb->getQuery();
     $query->setMaxResults(50);
     $offset=($page-1)*50;
     $query->setFirstResult($offset);
-    return $query->getResult();
+    //permet de gérer la pagination sur les jointures
+    $paginator=new Paginator($query);
+    return $paginator;
 }
+
 }
