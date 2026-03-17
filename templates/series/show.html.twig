@@ -2,7 +2,11 @@
 
 {% block body %}
     <h2>Detail of a TV-SHOW</h2>
-    <a href="{{ path('series_update',{'id': serie.id}) }}">Update Serie</a>
+    <div class="button-bar">
+        <a class="button-links" href="{{ path('series_update',{'id': serie.id}) }}">Update Serie</a>
+        <a class="button-links" onclick="return confirm('suppression de {{ serie.name }} ?')" href="{{ path('series_delete',{'id': serie.id}) }}">Delete Serie</a>
+        <a class="button-links" href="{{ path('season_add_by_serie',{'id': serie.id}) }}">Add a Season</a>
+    </div>
 
     <div class="serie-details">
         <div>
@@ -19,8 +23,12 @@
     </div>
     <div class="seasons">
         <h3>Season</h3>
+
         {% for season in serie.seasons %}
     <article>
+        <br>
+        <a class="button-links" href="{{ path('season_delete', {'id': season.id}) }}">Delete the Season</a>
+        <br>
         <img src="{{ asset('images/posters/seasons/' ~ season.poster) }}"
                   alt="{{ serie.name }} | #{{ season.number }}">
         <div>
