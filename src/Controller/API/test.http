@@ -1,0 +1,22 @@
+###delete series
+DELETE http://localhost:8081/series/public/api/series/2
+
+
+
+### CREATE series
+POST http://localhost:8081/series/public/api/series/create
+Content-Type: application/json
+
+{
+    "name": "la serie de Michel",
+    "genres": "western",
+    "status": "returning",
+    "vote": "8",
+    "popularity": "500",
+    "firstAirDate": "2026-03-01",
+    "lastAirDate": "2026-03-31",
+    "backdrop": "backdrop.png",
+    "poster": "poster.png",
+    "tmdbId": 123456
+}
+###

@@ -19,6 +19,9 @@
             <div>Status : {{ serie.status }}</div>
             <div>Aired from {{ serie.firstAirDate | date('Y/m/d') }} to {{ serie.lastAirDate | date('Y/m/d') }}</div>
             <div>{{ serie.overview | nl2br }}</div>
+            <div>Likes: <span id="serie-like"> {{ serie.nblike }}</span>
+                <button class="btn-Like" value="1">&#128077</button>
+                <button class="btn-Like" value="-1">&#128078</button></div>
         </div>
     </div>
     <div class="seasons">
@@ -49,5 +52,23 @@
         }
     </style>
 
+{% endblock %}
+{% block extrajs%}
+<script>
+    let buttons = Array.from(document.querySelectorAll(".btn-Like"));
+    buttons.forEach(function(button){
+        button.addEventListener("click", function(){
+            let value=this.value;
+            let data ={like: value};
+
+            fetch('{{ path('api_series_update', {'id':serie.id}) }}',{method:'PUT', body:JSON.stringify(data)})
+                .then(response => response.json())
+                .then(data=>{
+                    document.getElementById('serie-like').innerText =data.nblike;
+                    console.log(data)
+                });
+        })
+    })
+</script>
 {% endblock %}
 
