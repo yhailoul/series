@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Serie;
 use App\Form\SerieType;
 use App\Repository\SerieRepository;
+use App\Utile\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -46,7 +47,10 @@ final class SerieController extends AbstractController
 
     }
     #[Route('/create', name: 'create', methods: ['POST','GET'])]
-    public function create(EntityManagerInterface $entityManager, Request $request): Response
+    public function create(
+        FileUploader $fileUploader,
+        EntityManagerInterface $entityManager,
+        Request $request): Response
     {
         $serie= new Serie();
         $serieForm = $this->createForm(SerieType::class, $serie);
@@ -60,7 +64,9 @@ final class SerieController extends AbstractController
              * @var UploadedFile $file
              */
             //récupère une information qui n'est pas directement mappée avec l'entité
+            //récupère un file qu'on peut upload
             $file= $serieForm->get('backdrop')->getData();
+            $serie->setBackdrop($fileUploader->upload($file,'images/backdrops',$serie->getName()));
             $newFileName =$serie->getName().'-'.uniqid().'.'.$file->guessExtension();
             $file->move('images/backdrops', $newFileName);
             $serie->setBackdrop($newFileName);
