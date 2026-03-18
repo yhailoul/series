@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\HasLifecycleCallbacks()]
@@ -16,58 +17,73 @@ class Serie
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('serie-api')]
     private ?int $id = null;
 
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "please enter a tv-show name")]
     #[Assert\Length(min: 1, max: 255, maxMessage: "max : {{ limit }} characters allowed")]
+    #[Groups('serie-api')]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups('serie-api')]
     private ?string $overview = null;
 
     #[ORM\Column(length: 50)]
     #[Assert\Choice(choices: ['ended','returning','cancelled'], message: "Please select a series overview")]
+    #[Groups('serie-api')]
     private ?string $status = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 3, scale: 1)]
     #[Assert\Range(notInRangeMessage: "vote must be between {{ min }} and {{ max }}", min:0, max:10)]
+    #[Groups('serie-api')]
     private ?string $vote = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 6, scale: 2)]
+    #[Groups('serie-api')]
     private ?string $popularity = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('serie-api')]
     private ?string $genres = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Assert\LessThan(propertyPath: "lastAirDate")]
+    #[Groups('serie-api')]
     private ?\DateTime $firstAirDate = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Assert\GreaterThan(propertyPath: "firstAirDate")]
+    #[Groups('serie-api')]
     private ?\DateTime $lastAirDate = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('serie-api')]
     private ?string $backdrop = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('serie-api')]
     private ?string $poster = null;
 
     #[ORM\Column]
+    #[Groups('serie-api')]
     private ?int $tmdbId = null;
 
     #[ORM\Column]
+    #[Groups('serie-api')]
     private ?\DateTime $dateCreated = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups('serie-api')]
     private ?\DateTime $dateModified = null;
 
     /**
      * @var Collection<int, Season>
      */
     #[ORM\OneToMany(targetEntity: Season::class, mappedBy: 'serie', cascade: ['remove'])]
+    #[Groups('serie-api')]
     private Collection $seasons;
 
     public function __construct()
